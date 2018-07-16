@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#330066</color>
+    <color name="colorPrimaryDark">#330066</color>
+    <color name="colorAccent">#D84315</color>
+
+    <color name="colorMars">#D84315</color>
+    <color name="colorSpace">#330066</color>
+    <color name="colorStar">#8e97c9</color>
+</resources>

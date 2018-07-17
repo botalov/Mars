@@ -19,5 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".GalleryWindow.Views.GalleryActivity"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 </manifest>

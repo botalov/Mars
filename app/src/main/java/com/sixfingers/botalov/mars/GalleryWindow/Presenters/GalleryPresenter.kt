@@ -1,6 +1,5 @@
 package com.sixfingers.botalov.mars.GalleryWindow.Presenters
 
-import android.util.Log
 import com.sixfingers.botalov.mars.App
 import com.sixfingers.botalov.mars.Entities.MarsData
 import com.sixfingers.botalov.mars.GalleryWindow.Views.IGalleryView
@@ -12,6 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.NonNull
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 
 class GalleryPresenter: IGalleryPresenter{
@@ -31,28 +31,21 @@ class GalleryPresenter: IGalleryPresenter{
     override fun getOpportunityPhotos() {
         view?.showProgress()
         val observable: Observable<MarsData>? = retrofit?.create(INetwork::class.java)
-                ?.getOpportunityPhotos(App.getAppContext().getString(R.string.api_key), 0)
+                ?.getOpportunityPhotos(App.getAppContext().getString(R.string.api_key), "2018-10-10")
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
 
         observable?.subscribeWith(getObserver())
     }
 
-    override fun getCuriosityPhotos() {
+    override fun getCuriosityPhotos(date: String) {
         view?.showProgress()
-       // val realmData: MarsData? = getDataFromRealm()
-      //  if(realmData == null){
-            val observable: Observable<MarsData>? = retrofit?.create(INetwork::class.java)
-                    ?.getCuriosityPhotos(App.getAppContext().getString(R.string.api_key), 0)
-                    ?.subscribeOn(Schedulers.io())
-                    ?.observeOn(AndroidSchedulers.mainThread())
+        val observable: Observable<MarsData>? = retrofit?.create(INetwork::class.java)
+                ?.getCuriosityPhotos(App.getAppContext().getString(R.string.api_key), date)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
 
-            observable?.subscribeWith(getObserver())
-     //   }
-      //  else{
-          //  view?.showPhotos(realmData)
-      //  }
-
+        observable?.subscribeWith(getObserver())
     }
 
     private fun getObserver(): DisposableObserver<MarsData>{
@@ -76,40 +69,4 @@ class GalleryPresenter: IGalleryPresenter{
             }
         }
     }
-
-    /*private fun getDataFromRealm(): MarsData?{
-        val realm: Realm = Realm.getDefaultInstance()
-        if(realm.isInTransaction){
-            realm.commitTransaction()
-        }
-        try{
-            realm.beginTransaction()
-            val data: MarsRealmData? = realm.where(MarsRealmData::class.java).findFirst()
-            return data?.data
-        }
-        finally {
-            realm.commitTransaction()
-        }
-    }
-    private fun updateRealData(data: MarsData){
-        val realm: Realm = Realm.getDefaultInstance()
-        if(realm.isInTransaction){
-            realm.commitTransaction()
-        }
-        try{
-            realm.beginTransaction()
-            val realmData: MarsRealmData? = realm.where(MarsRealmData::class.java).findFirst()
-            if(realmData != null){
-                realm.delete(MarsRealmData::class.java)
-            }
-            val nData: MarsRealmData = realm.createObject(MarsRealmData::class.java)
-            nData.data = data
-            nData.updateDate = Date()
-            realm.insert(nData)
-        }
-        finally {
-            realm.commitTransaction()
-        }
-    }*/
-
 }
